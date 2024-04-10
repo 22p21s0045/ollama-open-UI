@@ -6,6 +6,7 @@ import Sidebar from "@/components/Sidebar.vue";
 import ChatVue from '@/components/Chat.vue';
 import { ChatManager } from '../../lib/ChatManager';
 import { reactive, ref, toRef, watch } from 'vue';
+import 'highlight.js/styles/atom-one-dark.css';
 const manager = reactive(new ChatManager())
 const historys = toRef(manager, 'historys')
 
