@@ -1,19 +1,13 @@
 <script setup>
-import { computed } from "vue"
-import { Marked } from "marked";
+import { computed, onMounted, watch } from "vue"
+import markdownit from 'markdown-it'
+import markdownItHighlight from 'markdown-it-highlightjs'
+import { marked} from "marked";
 import { markedHighlight } from "marked-highlight";
 import hljs from 'highlight.js';
 
-
-const marked = new Marked(
-  markedHighlight({
-    langPrefix: 'hljs language-',
-    highlight(code, lang, info) {
-      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-      return hljs.highlight(code, { language }).value;
-    }
-  })
-);
+const md = markdownit()
+md.use(markdownItHighlight)
 const props = defineProps({
   history: {
     type: Array,
@@ -21,6 +15,7 @@ const props = defineProps({
     required: true,
   },
 })
+
 const histories = computed(() => {
   console.log("History recompute")
   return props.history
@@ -51,8 +46,8 @@ const histories = computed(() => {
         </div>
         <div v-else>
           <article class="prose">
-            <div v-html=" marked.parse(history.response.content)"></div>
-           
+            <div v-html=" md.render(history.response.content)"></div>
+         
             
           </article>
         </div>
